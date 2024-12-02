@@ -1,4 +1,6 @@
 import express from 'express';
+import {IMessage} from '../types';
+import fileMessage from '../fileMessage';
 
 const messagesRouter = express.Router();
 
@@ -8,8 +10,14 @@ messagesRouter.get("/", async (req, res) => {
 });
 
 messagesRouter.post("/", async (req, res) => {
-    console.log(req.body);
-    res.send("Создание и возвращение сообщения будет здесь");
+    const datetime = new Date().toISOString();
+    const newMessage: IMessage = {
+        message: req.body.message,
+        datetime,
+    };
+
+    const sendMessage = await fileMessage.addMessage(newMessage);
+    res.send(sendMessage);
 });
 
 export default messagesRouter;
