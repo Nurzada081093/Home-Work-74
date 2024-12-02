@@ -12,10 +12,11 @@ app.use('/messages', messagesRouter);
 
 const run = async () => {
     await fileMessage.createDirectory();
-
     const files = await fs.readdir (path);
     files.map(async (file) => {
-        console.log(path + '/' + file);
+        const way = path + '/' + file;
+        const messageText = await fs.readFile(way);
+        console.log(messageText.toString());
     });
 
     app.listen(port, () => {

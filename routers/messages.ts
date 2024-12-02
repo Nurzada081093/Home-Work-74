@@ -5,8 +5,8 @@ import fileMessage from '../fileMessage';
 const messagesRouter = express.Router();
 
 messagesRouter.get("/", async (req, res) => {
-    console.log(req.body);
-    res.send("Список  всех сообщений здесь");
+    const messages = await fileMessage.getMessages();
+    res.send(messages);
 });
 
 messagesRouter.post("/", async (req, res) => {
