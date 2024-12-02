@@ -6,8 +6,16 @@ const messagesDirectory = path.resolve(__dirname, 'messages');
 let messages: IMessage[] = [];
 
 const fileMessages = {
+    async createDirectory() {
+        try {
+            await fs.access(messagesDirectory);
+        } catch (err) {
+            await fs.mkdir(messagesDirectory, { recursive: true });
+        }
+    },
 
     async addMessage(message: IMessage) {
+        await this.createDirectory();
         const fileName = `${message.datetime}.txt`;
         const fileWay = path.resolve(messagesDirectory, fileName);
 
