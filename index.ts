@@ -1,19 +1,23 @@
 import express from "express";
+import messagesRouter from "./routers/messages";
+import {promises as fs} from 'fs';
+const path = 'messages' ;
+
 const app = express();
 const port = 8000;
 
-app.get("/messages", (req, res) => {
-    res.send("Список  всех сообщений здесь");
-});
+app.use(express.json());
+app.use('/messages', messagesRouter);
 
-app.get("/messages/:id", (req, res) => {
-    res.send("Получаю одно сообщение по его id");
-});
+const run = async () => {
+    const files = await fs.readdir (path);
+    files.map(async (file) => {
+        console.log(path + '/' + file);
+    });
 
-app.post("/messages", (req, res) => {
-    res.send("Создание и возвращение сообщения будет здесь");
-});
+    app.listen(port, () => {
+        console.log(`Server started on http://localhost:${port}`);
+    });
+};
 
-app.listen(port, () => {
-    console.log(`Server started on port http://localhost:${port}`);
-});
+run().catch(err => console.error(err));
